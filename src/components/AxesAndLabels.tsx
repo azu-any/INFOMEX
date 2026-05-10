@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Line } from '@react-three/drei';
-import { YEARS, REGIONS, ROUNDS } from '../DataUtils';
+import { ROUNDS } from '../DataUtils';
 
 const AXIS_COLOR = '#94a3b8'; // slate-400
 const TEXT_COLOR = '#f8fafc'; // slate-50
@@ -9,16 +9,24 @@ interface AxesAndLabelsProps {
   xSpacing: number;
   ySpacing: number;
   zSpacing: number;
+  timeLabels: string[];
+  regionLabels: string[];
+  timeLevelName: string;
+  regionLevelName: string;
 }
 
 export const AxesAndLabels: React.FC<AxesAndLabelsProps> = ({
   xSpacing,
   ySpacing,
   zSpacing,
+  timeLabels,
+  regionLabels,
+  timeLevelName,
+  regionLevelName,
 }) => {
   const xLength = ROUNDS.length * xSpacing;
-  const yLength = REGIONS.length * ySpacing;
-  const zLength = YEARS.length * zSpacing;
+  const yLength = regionLabels.length * ySpacing;
+  const zLength = timeLabels.length * zSpacing;
 
   return (
     <group>
@@ -50,7 +58,7 @@ export const AxesAndLabels: React.FC<AxesAndLabelsProps> = ({
         </Text>
       ))}
 
-      {/* Y Axis (Regions) */}
+      {/* Y Axis (Region) */}
       <Line
         points={[[-0.5, -0.5, -0.5], [-0.5, yLength, -0.5]]}
         color={AXIS_COLOR}
@@ -64,9 +72,9 @@ export const AxesAndLabels: React.FC<AxesAndLabelsProps> = ({
         anchorY="middle"
         rotation={[0, 0, Math.PI / 2]}
       >
-        Region (Y)
+        {regionLevelName} (Y)
       </Text>
-      {REGIONS.map((region, idx) => (
+      {regionLabels.map((region, idx) => (
         <Text
           key={`y-label-${idx}`}
           position={[-0.8, idx * ySpacing, -0.5]}
@@ -79,7 +87,7 @@ export const AxesAndLabels: React.FC<AxesAndLabelsProps> = ({
         </Text>
       ))}
 
-      {/* Z Axis (Years) */}
+      {/* Z Axis (Time) */}
       <Line
         points={[[-0.5, -0.5, -0.5], [-0.5, -0.5, zLength]]}
         color={AXIS_COLOR}
@@ -93,9 +101,9 @@ export const AxesAndLabels: React.FC<AxesAndLabelsProps> = ({
         anchorY="middle"
         rotation={[0, -Math.PI / 2, 0]}
       >
-        Year (Z)
+        {timeLevelName} (Z)
       </Text>
-      {YEARS.map((year, idx) => (
+      {timeLabels.map((time, idx) => (
         <Text
           key={`z-label-${idx}`}
           position={[-0.5, -0.8, idx * zSpacing]}
@@ -105,7 +113,7 @@ export const AxesAndLabels: React.FC<AxesAndLabelsProps> = ({
           anchorY="middle"
           rotation={[0, -Math.PI / 2, 0]}
         >
-          {year}
+          {time}
         </Text>
       ))}
     </group>
